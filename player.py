@@ -5,7 +5,7 @@ from city import city
 
 class player:
 
-    def __init__(self, city_cards, role = None, city = city, controller = controller):
+    def __init__(self, city_cards, role = None, city = city, controller=controller):
         """
         :param city_cards: list of initial city_card objects
         :param role: TBD, role of player, V2 feature
@@ -16,7 +16,6 @@ class player:
         self.role = role
         self.city = city
         self.controller = controller
-
 
     def __has_city_card(self, city_card_str):
         """
@@ -33,13 +32,6 @@ class player:
         self.city_cards = [city_card for city_card in self.city_cards if city_card.str != city_card_str]
 
         # TODO: change boolean in city_card that is discarded to true?
-
-
-    # TURN EVENTS
-
-
-
-
 
     # ACTIONS
     def drive_or_ferry_to_city(self, to_city):
@@ -97,11 +89,11 @@ class player:
     def treat_disease(self, color):
 
         if self.controller.disease_cured(color):
-            self.city.remove_cubes(n=3, color=color)
+            self.city.remove_cubes(n=self.city.get_n_cubes(color), color=color)
         else:
             self.city.remove_cubes(n=1, color=color)
 
-    def share_knowledge(self, other_player, give = False, take = False):
+    def share_knowledge(self, other_player, give=False, take=False):
         """
         :param other_player: player in same city to give or take player_card from,
             player_card must match current city
@@ -110,6 +102,43 @@ class player:
         :return: ValueError if players not in same city,
             or player that is supposed to give does not have the card
         """
+        if take and give:
+            raise ValueError("share_knowledge not allowed, give and take both true")
+        if self.city.str != other_player.city.str:
+            raise ValueError("share_knowledge not allowed, players not in same city")
+        if take:
+            return other_player.share_knowledge(self, give=True)
+        if not self.__has_city_card(self.city.str):
+            raise ValueError("share_knowledge not allowed, player that is giving card does not have card")
 
-        
+        # find city_card that matches the city the player is in:
+        city_card_to_give = [city_card for city_card in self.city_cards if city_card.str == self.city.str][0]
+
+        # give this city card to other player
+        # TODO: verify that the controller checks that this player does not have more than 7 cards at the end of the turn
+        other_player.city_cards.append(city_card_to_give)
+
+        # remove the card that was given from this player
+        self.city_cards = [city_card for city_card in self.city_cards if city_card.str != city_card_to_give.str]
+
+    def discover_cure(self, color):
+        """
+        :param color: color to discover cure for
+        :return: ValueError if cure already discovered, no research station in city, not having enough cards
+        """
+
+        if self.controller.disease_cured(color):
+            raise ValueError("discover_cure not allowed, cure already discovered for this color")
+        if not self.city.has_research_station():
+            raise ValueError("discover_cure not allowed, no research station in this city")
+
+        city_cards_of_color = [city_card for city_card in self.city_cards if city_card.color == color]
+        if len(city_cards_of_color) < 5:
+            raise ValueError("discover_cure not allowed, player has less than 5 city cards of that color")
+        city_cards_to_discard = city_cards_of_color[:5]
+        for city_card in city_cards_to_discard:
+            self.__discard_city_card(city_card.str)
+
+
+
 
