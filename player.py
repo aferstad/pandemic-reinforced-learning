@@ -2,7 +2,6 @@
 
 from city import city
 
-
 class player:
 
     def __init__(self, city_cards, role = None, city = city, controller=controller):
