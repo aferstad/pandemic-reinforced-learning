@@ -10,7 +10,7 @@ class city:
         self.__adjacent_cities = None
         self.__adjacent_cities_names = None
         self.__has_research_station = False
-        self.__cubes = {col: 0 for col in COLORS}
+        self.__cubes = {col: 0 for col in constants.COLORS}
 
     def get_name(self):
         return self.__name
