@@ -1,33 +1,16 @@
-import json
-
-def check_if_adjancet(self, city):
-    return True
-
-
-def save_dict_as_json(output_dict, output_path):
-    """
-    :param output_path: where to save json file
-    :return: nothing, saves dict as json at output_path
-    """
-    with open(output_path, 'w') as outfile:
-        json.dump(output_dict, outfile)
-
-
-def open_dict_from_json(input_path):
-    """
-    :return: dict read from json at input_path
-    """
-    with open(input_path) as json_file:
-        input_dict = json.load(json_file)
-    return input_dict
-
-
+import constants
 
 class city:
     def __init__(self, name, loc, color):
+        self.str = name
         self.__name = name
         self.__loc = loc
         self.__color = color
+
+        self.__adjacent_cities = None
+        self.__adjacent_cities_names = None
+        self.__has_research_station = False
+        self.__cubes = {col: 0 for col in COLORS}
 
     def get_name(self):
         return self.__name
@@ -38,49 +21,31 @@ class city:
     def get_loc(self):
         return self.__loc
 
-def initialize_cities():
-    f=open("city_data.txt", "r")
-    lines = f.readlines()
-    next_adjancent = False
-    cities_created = {}
-    adjacents_cities = {}
-    for i, line in enumerate(lines):
-        if next_adjancent:
-            adjacent = line.replace("'","").split(",")
-            adjacent = [name.strip() for name in adjacent]
+    def get_n_cubes(self, color):
+        return self.__cubes[color]
 
-            print(adjacent)
-            next_adjancent = False
+    def get_adjacent_cities(self):
+        return self.__adjacent_cities
 
-            if city_name not in cities_created.keys():
-                c = city(city_name, loc, color)
-                cities_created[city_name] = c
-                adjacents_cities[city_name] = adjacent
+    def has_research_station(self):
+        return self.__has_research_station
 
-        elif "name" in line:
-            city_name = line.split("'")[1].replace(" ","").strip()
-            print(city_name)
-            state = 1
+    def set_adjacent_cities(self, adjacent_cities):
+        self.__adjacent_cities = adjacent_cities
+        self.__adjacent_cities_names = [c.str for c in self.__adjacent_cities]
 
-        elif "loc" in line:
-            loc = line.split("'")[1].split(",")
-            loc[0] = float(loc[0])
-            loc[1] = float(loc[1])
-            print(loc)
-            state =+ 1
+    def build_research_station(self):
+        if self.__has_research_station:
+            raise ValueError("I have a research station already stupid!")
+        self.__has_research_station = True
 
-        elif "color" in line:
-            color = line.split("'")[1]
-            print(color)
-            state =+ 1
+    def remove_cubes(self, n, color):
+        number_cubes = self.get_n_cubes(color)
+        if(number_cubes < n or n <= 0):
+            raise ValueError("Invalid number of cubes removed from city")
+        self.__cubes[color] -= n
 
-        elif "adjacent" in line:
-            next_adjancent = True
-    for c in adjacents_cities.keys():
-        if c not in cities_created.keys():
-            raise ValueError("City not created, read error")
-        adjacent = adjacents_cities[c]
-        adjacent = [cities_created[name] for name in adjacent]
-
-
-initialize_cities()
+    def adjacent_to(self, to_city):
+        if to_city.str in self.__adjacent_cities_names:
+            return True
+        return False
