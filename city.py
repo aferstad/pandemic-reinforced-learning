@@ -21,6 +21,9 @@ class city:
     def get_loc(self):
         return self.__loc
 
+    def get_color(self):
+        return self.__color
+
     def get_n_cubes(self, color):
         return self.__cubes[color]
 

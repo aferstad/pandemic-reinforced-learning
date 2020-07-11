@@ -42,6 +42,6 @@ def initialize_cities(path):
         adjacent = adjacents_cities[c]
         adjacent = [cities_created[name] for name in adjacent]
         cities_created[c].set_adjacent_cities(adjacent)
-    return cities_created
+    return cities_created.values()
 
 # initialize_cities(constants.CITY_JSON_PATH)
