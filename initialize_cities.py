@@ -1,10 +1,7 @@
 import constants
 from city import city
-
-# path = "city_data.txt"
-
 def initialize_cities(path):
-    f=open("city_data.txt", "r")
+    f=open(path, "r")
     lines = f.readlines()
     next_adjancent = False
     cities_created = {}
@@ -14,7 +11,7 @@ def initialize_cities(path):
             adjacent = line.replace("'","").split(",")
             adjacent = [name.strip() for name in adjacent]
 
-            if DEBUG:
+            if constants.DEBUG:
                  print(adjacent)
             next_adjancent = False
 
@@ -24,19 +21,19 @@ def initialize_cities(path):
                 adjacents_cities[city_name] = adjacent
         elif "name" in line:
             city_name = line.split("'")[1].strip()
-            if DEBUG:
+            if constants.DEBUG:
                 print(city_name)
 
         elif "loc" in line:
             loc = line.split("'")[1].split(",")
             loc[0] = float(loc[0])
             loc[1] = float(loc[1])
-            if DEBUG:
+            if constants.DEBUG:
                 print(loc)
 
         elif "color" in line:
             color = line.split("'")[1]
-            if DEBUG:
+            if constants.DEBUG:
                 print(color)
 
         elif "adjacent" in line:
@@ -45,6 +42,6 @@ def initialize_cities(path):
         adjacent = adjacents_cities[c]
         adjacent = [cities_created[name] for name in adjacent]
         cities_created[c].set_adjacent_cities(adjacent)
-    return cities_created
+    return cities_created.values()
 
-# initialize_cities(path)
+# initialize_cities(constants.CITY_JSON_PATH)
