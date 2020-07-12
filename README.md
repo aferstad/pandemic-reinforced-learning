@@ -1,2 +1,2 @@
 # pandemic-reinforced-learning
-Building an AI to win the Pandemic Boardgame
+First building the pandemic boardgame in python, then a reinforced learning model to beat the game 
