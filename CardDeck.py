@@ -6,6 +6,7 @@ class CardDeck:
 
     def __init__(self, cards):
         self.__cards = cards
+        self.__discarded_cards = {}
 
         # card order is an array of strings
         self.__card_order = list(cards.keys())
@@ -15,17 +16,26 @@ class CardDeck:
     def shuffle(self):
         random.shuffle(self.__card_order)
 
-    def get_n_cards(self):
-        return len(self.__n_cards)
+    def get_card_count(self):
+        return len(self.__cards)
 
     def draw_card(self):
-        if len(self.__n_cards) == 0:
+        if len(self.__cards) == 0:
             raise ValueError('No more cards in deck')
 
-        names_of_cards_to_draw = self.__card_order[:n]
-        cards_to_draw = self.__cards
+        card_str = self.__card_order.pop(0) # pop removes element and returns it
+        card = self.__cards.pop(card_str)
+
+        self.__discarded_cards[card_str] = card
+
+        # TODO: CONTINUE HERE
+
+
+
+
 
         # pop from dict here
+
 
 
 
