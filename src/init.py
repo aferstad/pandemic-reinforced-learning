@@ -44,5 +44,5 @@ def initialize_cities(path):
         adjacent = adjacent_cities[c]
         adjacent = [cities_created[name] for name in adjacent]
         cities_created[c].set_adjacent_cities(adjacent)
-    return cities_created.values()
+    return cities_created
 

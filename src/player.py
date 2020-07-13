@@ -1,5 +1,3 @@
-from src.city import City
-from src.controller import Controller
 from src.card import Card
 
 
@@ -16,6 +14,10 @@ class Player:
         self.role = role
         self.city = city
         self.controller = controller
+
+    def __str__(self):
+        return "Player is in city {} with cards {}".format(self.city, self.cards)
+
 
     def has_card(self, card):
         """

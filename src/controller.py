@@ -3,6 +3,7 @@ from src.init import initialize_cities
 import src.constants as constants
 from src.card import Card, CityCard
 from src.CardDecks import InfectionCardDeck, PlayerCardDeck
+from src.infectionManager import InfectionManager
 
 
 class Controller:
@@ -11,7 +12,7 @@ class Controller:
         self.cities = initialize_cities(constants.CITY_JSON_PATH)
 
         # Initialize start_city:
-        self.start_city = self.cities.get(constants.START_CITY_STR)
+        self.start_city = self.cities[constants.START_CITY_STR]
         self.start_city.build_research_station()
 
         # Create card decks:
@@ -33,6 +34,13 @@ class Controller:
                                        role=None))
 
         self.player_deck.add_epidemic_cards(n=constants.N_EPIDEMIC_CARDS)
+
+        self.infection_manager = InfectionManager(controller=self,
+                                                  infection_deck=self.infection_deck)
+        self.infection_manager.infect_initial_cities()
+
+    def begin_play(self):
+        pass
 
 
 
