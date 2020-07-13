@@ -42,5 +42,10 @@ class Controller:
     def begin_play(self):
         pass
 
+    def game_over(self, reason=None):
+        print('GAME OVER! DUE TO {}'.format(reason))
+        raise ValueError('GAME OVER')
+        # TODO: FIND OUT HOW TO FIX THIS?
+
 
 

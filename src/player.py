@@ -18,6 +18,9 @@ class Player:
     def __str__(self):
         return "Player is in city {} with cards {}".format(self.city, self.cards)
 
+    def select_cards_to_discard(self, number_of_cards):
+        # TODO: ACTION FOR HUMAN / AI
+        pass
 
     def has_card(self, card):
         """

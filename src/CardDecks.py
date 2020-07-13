@@ -1,5 +1,5 @@
 import random
-from src.card import Card
+from src.card import EpidemicCard
 
 
 class CardDeck:
@@ -46,6 +46,7 @@ class InfectionCardDeck(CardDeck):
         """
         super().__init__(cards=cards)
         self.__discarded_cards = {}
+        self.cities_with_outbreaks_due_to_current_card = {}
 
     def shuffle_discarded_cards_and_put_on_top(self):
         discarded_card_order = list(self.__discarded_cards.keys())
@@ -66,6 +67,7 @@ class InfectionCardDeck(CardDeck):
         drawn_cards = super().draw_n_cards(n)
         self.__discarded_cards.update(drawn_cards)  # adds drawn cards to discarded cards
 
+        self.cities_with_outbreaks_due_to_current_card = {}
         return drawn_cards
 
     def draw_bottom_card(self):
@@ -79,6 +81,8 @@ class InfectionCardDeck(CardDeck):
         card = self.cards.pop(card_str)
 
         self.__discarded_cards[card_str] = card
+
+        self.cities_with_outbreaks_due_to_current_card = {}
 
         return card
 
@@ -123,7 +127,7 @@ class PlayerCardDeck(CardDeck):
 
             epidemic_name = 'epidemic_number_' + str(current_epidemic_card_number)
             self.card_order.insert(index_of_epidemic_card, epidemic_name)
-            self.cards[epidemic_name] = Card(name=epidemic_name)
+            self.cards[epidemic_name] = EpidemicCard(name=epidemic_name)
 
             current_epidemic_card_number -= 1
             interval_end = interval_start - 1
@@ -134,7 +138,7 @@ class PlayerCardDeck(CardDeck):
 
             epidemic_name = 'epidemic_number_' + str(current_epidemic_card_number)
             self.card_order.insert(index_of_epidemic_card, epidemic_name)
-            self.cards[epidemic_name] = Card(name=epidemic_name)
+            self.cards[epidemic_name] = EpidemicCard(name=epidemic_name)
 
             current_epidemic_card_number -= 1
             interval_end = interval_start - 1
