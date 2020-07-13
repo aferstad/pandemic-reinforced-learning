@@ -1,12 +1,11 @@
-# player
-
 from src.city import City
 from src.controller import Controller
 from src.card import Card
 
+
 class Player:
 
-    def __init__(self, cards, city=City, controller=Controller, role=None):
+    def __init__(self, cards, city, controller, role=None):
         """
         :param cards: dict of initial player_cards objects
         :param city: start location
