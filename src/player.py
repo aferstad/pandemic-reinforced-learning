@@ -1,37 +1,42 @@
-# player
-
-from city import city
+from src.card import Card
 
 
-class player:
+class Player:
 
-    def __init__(self, city_cards, role = None, city = city, controller=controller):
+    def __init__(self, cards, city, controller, role=None):
         """
-        :param city_cards: list of initial city_card objects
-        :param role: TBD, role of player, V2 feature
+        :param cards: dict of initial player_cards objects
         :param city: start location
+        :param controller: controller object
+        :param role: TBD, role of player, V2 feature
         """
-
-        self.city_cards = city_cards
+        self.cards = cards
         self.role = role
         self.city = city
         self.controller = controller
 
-    def __has_city_card(self, city_card_str):
+    def __str__(self):
+        return "Player is in city {} with cards {}".format(self.city, self.cards)
+
+
+    def has_card(self, card):
         """
-        :param city_card_str: city card to check if player has in hand
+        :param card: either card object or card_str to check if player has
         :return: true if player has card
         """
-        for city_card in self.city_cards:
-            if city_card.str == city_card_str:
-                return True
+        if isinstance(card, Card):
+            return card.str in self.cards  # checks if string is in dict keys
+        else:
+            return card in self.cards
 
-        return False
-
-    def __discard_city_card(self, city_card_str):
-        self.city_cards = [city_card for city_card in self.city_cards if city_card.str != city_card_str]
-
-        # TODO: change boolean in city_card that is discarded to true?
+    def discard_card(self, card):
+        """
+        :param card: either card object or card_str to remove from player hand
+        """
+        if isinstance(card, Card):
+            self.cards.pop(card.str)
+        else:
+            self.cards.pop(card)
 
     # ACTIONS
     def drive_or_ferry_to_city(self, to_city):
@@ -46,10 +51,10 @@ class player:
         :return: ValueError if to_city not in self.city_cards
         """
 
-        if not self.__has_city_card(to_city.str):
+        if not self.has_card(to_city.str):
             raise ValueError("direct_flight not allowed since player does not have to_city card")
 
-        self.__discard_city_card(to_city.str)
+        self.discard_card(to_city.str)
         self.city = to_city
 
     def charter_flight(self, to_city):
@@ -58,10 +63,10 @@ class player:
         :return: ValueError if self.city not in self.city_cards
         """
 
-        if not self.__has_city_card(self.city.str):
+        if not self.has_card(self.city.str):
             raise ValueError("charter_flight not allowed since player does not have self.city card")
 
-        self.__discard_city_card(self.city.str)
+        self.discard_card(self.city.str)
         self.city = to_city
 
     def shuttle_flight(self, to_city):
@@ -80,10 +85,10 @@ class player:
         :return: ValueError if player does not have self.city in self.city_cards
         """
 
-        if not self.__has_city_card(self.city.str):
+        if not self.has_card(self.city.str):
             raise ValueError("build_research_station not allowed, player does not have self.city in self.city_cards")
 
-        self.__discard_city_card(self.city.str)
+        self.discard_card(self.city.str)
         self.city.build_research_station()
 
     def treat_disease(self, color):
@@ -108,7 +113,7 @@ class player:
             raise ValueError("share_knowledge not allowed, players not in same city")
         if take:
             return other_player.share_knowledge(self, give=True)
-        if not self.__has_city_card(self.city.str):
+        if not self.has_card(self.city.str):
             raise ValueError("share_knowledge not allowed, player that is giving card does not have card")
 
         # find city_card that matches the city the player is in:
@@ -137,7 +142,7 @@ class player:
             raise ValueError("discover_cure not allowed, player has less than 5 city cards of that color")
         city_cards_to_discard = city_cards_of_color[:5]
         for city_card in city_cards_to_discard:
-            self.__discard_city_card(city_card.str)
+            self.discard_card(city_card.str)
 
 
 

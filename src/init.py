@@ -1,24 +1,26 @@
-import constants
-from city import city
+import src.constants as constants
+from src.city import City
+
+
 def initialize_cities(path):
-    f=open(path, "r")
+    f = open(path, "r")
     lines = f.readlines()
-    next_adjancent = False
+    next_adjacent = False
     cities_created = {}
-    adjacents_cities = {}
+    adjacent_cities = {}
     for i, line in enumerate(lines):
-        if next_adjancent:
+        if next_adjacent:
             adjacent = line.replace("'","").split(",")
             adjacent = [name.strip() for name in adjacent]
 
             if constants.DEBUG:
                  print(adjacent)
-            next_adjancent = False
+            next_adjacent = False
 
             if city_name not in cities_created.keys():
-                c = city(city_name, loc, color)
+                c = City(city_name, loc, color)
                 cities_created[city_name] = c
-                adjacents_cities[city_name] = adjacent
+                adjacent_cities[city_name] = adjacent
         elif "name" in line:
             city_name = line.split("'")[1].strip()
             if constants.DEBUG:
@@ -37,11 +39,10 @@ def initialize_cities(path):
                 print(color)
 
         elif "adjacent" in line:
-            next_adjancent = True
-    for c in adjacents_cities.keys():
-        adjacent = adjacents_cities[c]
+            next_adjacent = True
+    for c in adjacent_cities.keys():
+        adjacent = adjacent_cities[c]
         adjacent = [cities_created[name] for name in adjacent]
         cities_created[c].set_adjacent_cities(adjacent)
     return cities_created
 
-# initialize_cities(constants.CITY_JSON_PATH)
