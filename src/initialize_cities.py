@@ -1,5 +1,7 @@
-import constants
-from city import city
+import src.constants as constants
+from src.city import City
+
+
 def initialize_cities(path):
     f=open(path, "r")
     lines = f.readlines()
@@ -16,7 +18,7 @@ def initialize_cities(path):
             next_adjancent = False
 
             if city_name not in cities_created.keys():
-                c = city(city_name, loc, color)
+                c = City(city_name, loc, color)
                 cities_created[city_name] = c
                 adjacents_cities[city_name] = adjacent
         elif "name" in line:

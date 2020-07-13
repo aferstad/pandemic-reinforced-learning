@@ -1,9 +1,9 @@
 
 
-from player import player
-from initialize_cities import initialize_cities
-import constants
-from card import card
+from src.player import player
+from src.initialize_cities import initialize_cities
+import src.constants
+from src.card import Card
 
 
 def __create_players(n_players):
