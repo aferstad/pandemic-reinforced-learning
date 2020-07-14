@@ -8,6 +8,7 @@ def initialize_cities(path):
     next_adjacent = False
     cities_created = {}
     adjacent_cities = {}
+    current_city_id = 0
     for i, line in enumerate(lines):
         if next_adjacent:
             adjacent = line.replace("'","").split(",")
@@ -18,7 +19,8 @@ def initialize_cities(path):
             next_adjacent = False
 
             if city_name not in cities_created.keys():
-                c = City(city_name, loc, color)
+                c = City(city_name, loc, color, city_id=current_city_id)
+                current_city_id += 1
                 cities_created[city_name] = c
                 adjacent_cities[city_name] = adjacent
         elif "name" in line:

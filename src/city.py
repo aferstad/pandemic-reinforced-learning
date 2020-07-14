@@ -2,7 +2,8 @@ import src.constants as constants
 
 
 class City:
-    def __init__(self, name, loc, color):
+    def __init__(self, name, loc, color, city_id):
+        self.__id = city_id
         self.str = name
         self.__name = name
         self.__loc = loc
@@ -12,6 +13,9 @@ class City:
         self.__adjacent_cities_names = None
         self.__has_research_station = False
         self.__cubes = {col: 0 for col in constants.COLORS}
+
+    def get_id(self):
+        return self.__id
 
     def __str__(self):
         return "{} with {} {} cubes".format(self.__name, self.__cubes[self.__color], self.__color)

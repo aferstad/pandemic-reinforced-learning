@@ -95,7 +95,6 @@ class Player:
         self.city.build_research_station()
 
     def treat_disease(self, color):
-
         if self.controller.disease_cured(color):
             self.city.remove_cubes(n=self.city.get_n_cubes(color), color=color)
         else:
